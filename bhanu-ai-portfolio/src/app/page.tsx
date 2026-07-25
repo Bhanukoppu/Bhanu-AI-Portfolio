@@ -1,0 +1,33 @@
+import Navbar from "@/components/layout/Navbar";
+import Footer from "@/components/layout/Footer";
+import Hero from "@/components/sections/Hero";
+import About from "@/components/sections/About";
+import Education from "@/components/sections/Education";
+import Skills from "@/components/sections/Skills";
+import Projects from "@/components/sections/Projects";
+import Experience from "@/components/sections/Experience";
+import GoogleCloud from "@/components/sections/GoogleCloud";
+import Certificates from "@/components/sections/Certificates";
+import Learning from "@/components/sections/Learning";
+import Contact from "@/components/sections/Contact";
+
+export default function Home() {
+  return (
+    <>
+      <Navbar />
+      <main>
+        <Hero />
+        <About />
+        <Education />
+        <Skills />
+        <Projects />
+        <Experience />
+        <GoogleCloud />
+        <Certificates />
+        <Learning />
+        <Contact />
+      </main>
+      <Footer />
+    </>
+  );
+}

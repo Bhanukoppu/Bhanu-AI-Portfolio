@@ -1,0 +1,80 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --font-display: var(--font-display);
+  --font-body: var(--font-body);
+  --font-mono: var(--font-mono);
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #232a35 #0b0e13;
+}
+
+body {
+  background-color: #0b0e13;
+  background-image:
+    radial-gradient(circle at 15% 0%, rgba(217, 169, 78, 0.08), transparent 35%),
+    radial-gradient(circle at 87% 15%, rgba(79, 209, 197, 0.08), transparent 35%),
+    linear-gradient(180deg, rgba(20, 30, 45, 0.24), transparent 60%);
+  background-attachment: fixed;
+}
+
+.hero-ambient {
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(circle at 28% 18%, rgba(79, 209, 197, 0.14), transparent 18%),
+    radial-gradient(circle at 78% 72%, rgba(217, 169, 78, 0.12), transparent 18%),
+    radial-gradient(circle at 52% 48%, rgba(255, 255, 255, 0.06), transparent 20%);
+  pointer-events: none;
+  opacity: 0.95;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+@keyframes pulse-slow {
+  0%, 100% { opacity: 0.85; }
+  50% { opacity: 0.2; }
+}
+
+@keyframes shimmer {
+  0% { background-position: -150%; }
+  100% { background-position: 150%; }
+}
+
+/* Respect reduced-motion preferences everywhere */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Visible keyboard focus ring, on brand */
+:focus-visible {
+  outline: 2px solid #d9a94e;
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+.grid-fade {
+  background-image:
+    linear-gradient(to right, rgba(35, 42, 53, 0.5) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(35, 42, 53, 0.5) 1px, transparent 1px);
+  background-size: 42px 42px;
+  mask-image: radial-gradient(ellipse 70% 60% at 50% 30%, black 40%, transparent 100%);
+}
+
+.text-balance {
+  text-wrap: balance;
+}
