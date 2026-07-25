@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import SectionReveal from "@/components/ui/SectionReveal";
 import SectionTitle from "@/components/ui/SectionTitle";
 import Card from "@/components/ui/Card";
@@ -9,6 +9,15 @@ import { about, profile } from "@/data/portfolio";
 
 export default function About() {
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+  const [isOwnerMode, setIsOwnerMode] = useState(false);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    const params = new URLSearchParams(window.location.search);
+    const allowed = params.get("admin") === "true" || localStorage.getItem("portfolio-admin") === "true";
+    setIsOwnerMode(allowed);
+  }, []);
 
   function handleImageUpload(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
@@ -49,13 +58,21 @@ export default function About() {
               )}
             </div>
 
-            <div className="space-y-3 text-xs text-mist">
-              <label className="block text-mist">Preview your portrait</label>
-              <input type="file" accept="image/*" onChange={handleImageUpload} className="text-sm text-mist" />
-              <p className="text-[11px] text-mist">
-                For a permanent profile photo, place your image at <span className="font-mono">public/profile.jpg</span> and update the `photo` field in <span className="font-mono">src/data/portfolio.ts</span>.
-              </p>
-            </div>
+            {isOwnerMode ? (
+              <div className="space-y-3 text-xs text-mist">
+                <label className="block text-mist">Preview your portrait</label>
+                <input type="file" accept="image/*" onChange={handleImageUpload} className="text-sm text-mist" />
+                <p className="text-[11px] text-mist">
+                  For a permanent profile photo, place your image at <span className="font-mono">public/profile.jpg</span> and update the <span className="font-mono">photo</span> field in <span className="font-mono">src/data/portfolio.ts</span>.
+                </p>
+              </div>
+            ) : (
+              <div className="space-y-3 text-xs text-mist">
+                <p className="text-[11px] text-mist">
+                  The profile photo is managed by the site owner. Recruiters and visitors only see the current portrait.
+                </p>
+              </div>
+            )}
 
             <Card hover={false} className="!p-4">
               <dl className="grid grid-cols-2 gap-4">

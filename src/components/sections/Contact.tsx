@@ -16,7 +16,7 @@ export default function Contact() {
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     const subject = encodeURIComponent(`Portfolio contact from ${name}`);
-    const body = encodeURIComponent(`${message}\n\n— ${name} (${email})`);
+    const body = encodeURIComponent(`Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`);
     window.location.href = `mailto:${profile.email}?subject=${subject}&body=${body}`;
   }
 
@@ -84,12 +84,17 @@ export default function Contact() {
               />
             </div>
 
-            <button
-              type="submit"
-              className="inline-flex items-center gap-2 rounded-2xl bg-gradient-to-r from-gold via-gold to-teal px-6 py-3 text-sm font-semibold text-ink shadow-[0_18px_50px_-30px_rgba(79,209,197,0.9)] transition hover:brightness-110"
-            >
-              Send message <Send size={16} />
-            </button>
+            <div className="space-y-2">
+              <button
+                type="submit"
+                className="inline-flex items-center gap-2 rounded-2xl bg-gradient-to-r from-gold via-gold to-teal px-6 py-3 text-sm font-semibold text-ink shadow-[0_18px_50px_-30px_rgba(79,209,197,0.9)] transition hover:brightness-110"
+              >
+                Send message <Send size={16} />
+              </button>
+              <p className="text-[11px] text-mist">
+                Your email app will open with your details and the message addressed to {profile.email}.
+              </p>
+            </div>
           </motion.form>
 
           <motion.div
