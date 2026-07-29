@@ -18,7 +18,11 @@ export const profile = {
     linkedin: "https://www.linkedin.com/in/bhanu-prakash-koppu-064907290",
     twitter: "",
   },
-  resumeFile: "/resume.pdf", // TODO: export your resume.docx as PDF and place it here
+  resumeFiles: [
+    { label: "AI/ML Engineer", file: "/resumes/ai-ml-engineer.pdf" },
+    { label: "Data Analyst", file: "/resumes/data-analyst.pdf" },
+    { label: "Python Developer", file: "/resumes/python-developer.pdf" },
+  ],
   photo: "/profile.jpg",
   avatarInitials: "BP",
 };

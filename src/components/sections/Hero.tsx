@@ -1,8 +1,8 @@
 "use client";
 
-import { motion } from "framer-motion";
-import { useEffect, useState } from "react";
-import { ArrowDown, Download, FolderGit2 } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { useEffect, useState, useRef } from "react";
+import { ArrowDown, Download, FolderGit2, ChevronDown } from "lucide-react";
 import { profile } from "@/data/portfolio";
 import Button from "@/components/ui/Button";
 import dynamic from "next/dynamic";
@@ -33,6 +33,18 @@ const row = {
 export default function Hero() {
   const [remotePath, setRemotePath] = useState<string | null>(null);
   const [remoteExists, setRemoteExists] = useState<boolean>(false);
+  const [resumeOpen, setResumeOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    function handleClickOutside(e: MouseEvent) {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
+        setResumeOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   useEffect(() => {
     async function loadRemote() {
@@ -111,9 +123,44 @@ export default function Hero() {
             transition={{ duration: 0.6, delay: 0.4 }}
             className="mt-10 flex flex-wrap gap-4"
           >
-            <Button href={profile.resumeFile} download icon={<Download size={16} />}>
-              Download Resume
-            </Button>
+            <div className="relative" ref={dropdownRef}>
+              <button
+                onClick={() => setResumeOpen(!resumeOpen)}
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-2xl font-semibold text-sm transition duration-200 focus-visible:outline-2 focus-visible:outline-offset-2 bg-gradient-to-r from-gold via-gold to-teal text-ink hover:from-gold/90 hover:to-teal/90 shadow-[0_18px_60px_-30px_rgba(79,209,197,0.8)]"
+              >
+                Download Resume
+                <Download size={16} />
+                <ChevronDown
+                  size={14}
+                  className={`transition-transform duration-200 ${resumeOpen ? "rotate-180" : ""}`}
+                />
+              </button>
+
+              <AnimatePresence>
+                {resumeOpen && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 8, scale: 0.95 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, y: 8, scale: 0.95 }}
+                    transition={{ duration: 0.15 }}
+                    className="absolute left-0 top-full mt-2 z-50 min-w-[220px] rounded-xl border border-line bg-panel/95 backdrop-blur-md shadow-[0_20px_60px_-20px_rgba(0,0,0,0.5)] overflow-hidden"
+                  >
+                    {profile.resumeFiles.map((r) => (
+                      <a
+                        key={r.label}
+                        href={r.file}
+                        download
+                        onClick={() => setResumeOpen(false)}
+                        className="flex items-center gap-3 px-4 py-3 text-sm text-mist hover:bg-teal/10 hover:text-teal transition-colors"
+                      >
+                        <Download size={14} className="shrink-0" />
+                        {r.label}
+                      </a>
+                    ))}
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
             <Button href="#projects" variant="ghost" icon={<FolderGit2 size={16} />}>
               View Projects
             </Button>
